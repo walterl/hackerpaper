@@ -51,13 +51,18 @@
 
   Individual spec predicates are joined with `and`."
   [[& specs]]
-  (let [preds (mapv selector-spec->pred specs)]
-    (fn [node]
-      (every? #(% node) preds))))
+  (apply every-pred (mapv selector-spec->pred specs)))
+
+(defn select-all
+  "Convenience function for the following:
+
+      (filter (selector selector-specs) (walk node))."
+  [node selector-specs]
+  (filter (selector selector-specs) (walk node)))
 
 (defn select
-  "Convenience function for (-> (hwalk node) (as-> xs (filter (selector selector-specs) xs)) first)."
+  "Convenience function for the following:
+
+      (first (select-all node selector-specs))."
   [node selector-specs]
-  (-> (walk node)
-      (as-> xs (filter (selector selector-specs) xs))
-      first))
+  (first (select-all node selector-specs)))
