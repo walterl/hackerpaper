@@ -13,7 +13,7 @@
       h/children
       last))
 
-(defn comment-age
+(defn- comment-age
   "Extracts the comment age from the given `comm`ent `<tr>`-node."
   [comm]
   (-> (h/walk comm)
@@ -22,7 +22,7 @@
       h/children
       last))
 
-(defn paragraph->str
+(defn- paragraph->str
   "Converts a `:p`aragraph node to a string."
   [p]
   (if (and (vector? p)
@@ -30,7 +30,7 @@
     (str/join (h/children p)) ; There _should_ be only one child
     p))
 
-(defn drop-reply-link
+(defn- drop-reply-link
   "Drops the HN comment's \"reply\" link from the collection of comment text
   children.
 
@@ -53,7 +53,7 @@
        (map str/trim)
        (str/join "\n\n")))
 
-(defn comment-content
+(defn- comment-content
   "Returns the comment content, converted to text."
   [comm]
   (-> (h/walk comm)
@@ -62,7 +62,7 @@
       drop-reply-link
       block-text))
 
-(defn comment-level
+(defn- comment-level
   "Determines the `comm`ent's tree level, based on its indentation."
   [comm]
   (when-let [indent (-> (h/walk comm)
@@ -84,8 +84,8 @@
 (defn comments->comment-tree
   "Group `comments` into a tree.
 
-  The returned tree is similar to a Hiccup element tree: elements are vectors
-  of comments (first element) and replies (all other elements)."
+  The returned tree is similar to a Hiccup tree: elements are vectors of
+  comments (first element) and a vector of replies."
   [comments]
   (reduce append-comment [] comments))
 
@@ -97,7 +97,7 @@
    :comment (comment-content comment-tr)
    :level   (comment-level comment-tr)})
 
-(defn comment->yaml
+(defn- comment->yaml
   "Converts the specified `comm`ent and its `replies` to YAML, indented
   `indent` levels."
   [[comm & replies] indent]
@@ -114,7 +114,7 @@
 
 (defn comments-tree->yaml
   "Convert `comments` tree to YAML-like lines.
-  
+
   This is just the entry point. `comment->yaml` does the heavy lifting of
   actually rendering the comments and their replies."
   ([comments]
