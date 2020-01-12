@@ -10,17 +10,17 @@
 (defn parse
   "Parse HN thread from `f` (HTML file or URL)."
   [f]
-  (let [hiccup          (-> (slurp f)
-                            hick/parse
-                            hick/as-hiccup)
+  (let [hiccup          (-> (slurp f) hick/parse hick/as-hiccup)
         hnmain          (h/select (first hiccup) [:table {:id "hnmain"}])
-        fatitem-rows    (-> (h/select hnmain [:table {:class "fatitem"}])
+        fatitem-rows    (-> hnmain
+                            (h/select [:table {:class "fatitem"}])
                             (h/select [:tbody]))
-        comments-trs    (->> (h/select hnmain [:table {:class "comment-tree"}])
-                             h/walk
-                             (filter (h/selector [:tr {:class "athing comtr "}])))
+        comments-trs    (-> hnmain
+                            (h/select [:table {:class "comment-tree"}])
+                            (h/select-all [:tr {:class "athing comtr "}]))
 
-        title           (-> (h/select hnmain [:tr {:id "pagespace"}])
+        title           (-> hnmain
+                            (h/select [:tr {:id "pagespace"}])
                             h/attrs
                             :title)
         question        (-> (h/children fatitem-rows)
