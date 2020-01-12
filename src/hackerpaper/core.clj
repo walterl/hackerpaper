@@ -1,6 +1,5 @@
 (ns hackerpaper.core
-  (:require [clojure.string :as str]
-            [hackerpaper
+  (:require [hackerpaper
              [hiccup-tools :as h]
              [hn-thread :as hn]
              [util :as u]]
@@ -17,27 +16,21 @@
                             (h/select [:tbody]))
         comments-trs    (-> hnmain
                             (h/select [:table {:class "comment-tree"}])
-                            (h/select-all [:tr {:class "athing comtr "}]))
+                            (h/select-all [:tr {:class "athing comtr "}]))]
+    {:title    (-> hnmain
+                   (h/select [:tr {:id "pagespace"}])
+                   h/attrs
+                   :title)
+     :author   (hn/user-name fatitem-rows)
+     :question (-> (h/children fatitem-rows)
+                   (nth 4)
+                   last
+                   h/children
+                   hn/block-text)
+     :comments (hn/comments->comment-tree (map hn/comment-tr->comment comments-trs))}))
 
-        title           (-> hnmain
-                            (h/select [:tr {:id "pagespace"}])
-                            h/attrs
-                            :title)
-        question        (-> (h/children fatitem-rows)
-                            (nth 4)
-                            last
-                            h/children
-                            hn/block-text)
-        question-author (hn/search-hnuser fatitem-rows)
-        comments        (->> comments-trs
-                             (map hn/->comment)
-                             (hn/comments->comment-tree))]
-    {:title    title
-     :author   question-author
-     :question question
-     :comments comments}))
-
-(defn to-yaml
+(defn ->yaml
+  "Convert parsed HN thread to a YAML string."
   [{:keys [title author question comments]}]
   (str
    (str "title: " title "\n")
@@ -49,4 +42,4 @@
 (defn -main
   "I don't do a whole lot ... yet."
   [f & _args]
-  (println (-> f parse to-yaml)))
+  (println (-> f parse ->yaml)))

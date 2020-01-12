@@ -1,22 +1,22 @@
 (ns hackerpaper.hiccup-tools)
 
 (defn tag
-  "Returns tag of hiccup-style node."
+  "Returns tag of Hiccup-style node."
   [node]
   (first node))
 
 (defn attrs
-  "Returns attributes of hiccup-style node."
+  "Returns attributes of Hiccup-style node."
   [node]
   (second node))
 
 (defn children
-  "Returns seq of children from hiccup-style node."
+  "Returns seq of children from Hiccup-style node."
   [node]
   (drop 2 node))
 
 (defn walk
-  "Walk a hiccup structure"
+  "Walk a Hiccup structure"
   [node]
   (cons node
         (mapcat identity
@@ -43,13 +43,14 @@
     spec))
 
 (defn selector
-  "Returns a predicate that returns true for hiccup nodes matching the given
+  "Returns a predicate that returns true for Hiccup nodes matching the given
   spec.
 
-  Spec elememnts can be keywords (matched to tag name), maps (matched to
+  Specs are vectors of keywords (matched to tag name), maps (matched to
   attributes) or node predicates.
 
-  Individual spec predicates are joined with `and`."
+  All spec predicates must be satisfied for the constructed selector to return
+  true."
   [[& specs]]
   (apply every-pred (mapv selector-spec->pred specs)))
 
