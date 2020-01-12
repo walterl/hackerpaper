@@ -79,8 +79,7 @@
   {:age     (comment-age comment-tr)
    :author  (search-hnuser comment-tr)
    :comment (comment-content comment-tr)
-   :level   (comment-level comment-tr)
-   #_#_:tr      comment-tr})
+   :level   (comment-level comment-tr)})
 
 (defn comment->yaml
   [[comm & replies] indent]
