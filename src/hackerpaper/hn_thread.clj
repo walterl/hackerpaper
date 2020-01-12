@@ -1,4 +1,4 @@
-(ns hackerpaper.hnthread
+(ns hackerpaper.hn-thread
   (:require [clojure.string :as str]
             [hackerpaper
              [hiccup-tools :as h]

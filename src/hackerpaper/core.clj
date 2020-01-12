@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [hackerpaper
              [hiccup-tools :as h]
-             [hnthread :as hn]
+             [hn-thread :as hn]
              [util :as u]]
             [hickory.core :as hick])
   (:gen-class))
