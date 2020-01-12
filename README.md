@@ -1,44 +1,60 @@
 # hackerpaper
 
-FIXME: description
+Convert a HackerNews thread to a more diff-able format (YAML).
 
-## Installation
+If you used hackerpaper to convert an HN thread to YAML yesterday, and again
+today, you have something that's much easier to find new comments with.
 
-Download from http://example.com/FIXME.
+I'm not sure if the output is 100% valid YAML.
+
 
 ## Usage
 
-FIXME: explanation
+Build the jar:
 
-    $ java -jar hackerpaper-0.1.0-standalone.jar [args]
+    $ lein uberjar
 
-## Options
+Convert an HN thread to YAML:
 
-FIXME: listing of options this app accepts.
+    $ java -jar target/uberjar/hackerpaper-0.1.0-standalone.jar 'https://news.ycombinator.com/item?id=21771743' > yesterday.yaml
 
-## Examples
+Do it again later:
 
-...
+    $ java -jar target/uberjar/hackerpaper-0.1.0-standalone.jar 'https://news.ycombinator.com/item?id=21771743' > today.yaml
 
-### Bugs
+View differences (new comments) with Neovim:
 
-...
+    $ nvim -d yesterday.yaml today.yaml
 
-### Any Other Sections
-### That You Think
-### Might be Useful
+
+## Nifty parts
+
+In order to extract the necessary bits of HTML from the page, the HTML is
+converted to a [Hiccup](http://github.com/weavejester/hiccup)-like structure
+with [Hickory](https://github.com/davidsantiago/hickory). Why? Because I like
+the Hiccup-"encoding" of HTML elements. No other reason.
+
+Hickory has nice [CSS-style selectors](https://github.com/davidsantiago/hickory#selectors)
+to use on its own data structure, but nothing like that for Hiccup-type
+structures.
+
+So I wrote some. It just turns out that they work quite well with threading
+operators. Have a look at
+[hiccup_tools.clj](./src/hackerpaper/hiccup_tools.clj). It's used all over the
+place, but the best demonstration of those functions are probably in
+`hackerpaper.core/parse`.
+
+It should be easy enough to use copy and use that file in other projects.
+
+
+## TODO
+
+* [ ] Extract Hiccup-surgery tools into separate library.
+* [ ] Extend `hackerpaper.hnthread/block-text` to convert italics and links to
+  Markdown.
+* Support predicates for attribute values.
+
 
 ## License
 
-Copyright © 2020 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+[GPLv3](./LICENSE.md)
