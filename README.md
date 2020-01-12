@@ -1,8 +1,8 @@
-# hackerpaper
+# HackerPaper
 
 Convert a HackerNews thread to a more diff-able format (YAML).
 
-If you used hackerpaper to convert an HN thread to YAML yesterday, and again
+If you used HackerPaper to convert an HN thread to YAML yesterday, and again
 today, you have something that's much easier to find new comments with.
 
 I'm not sure if the output is 100% valid YAML.
@@ -42,7 +42,7 @@ So I wrote some. It just turns out that they work quite well with threading
 operators. Have a look at
 [hiccup_tools.clj](./src/hackerpaper/hiccup_tools.clj). It's used all over the
 place, but the best demonstration of those functions are probably in
-`hackerpaper.core/parse`.
+[`hackerpaper.core/parse`](https://github.com/walterl/hackerpaper/blob/e9edcece1fd9b4e77413bd46e71290cc491227be/src/hackerpaper/core.clj#L9).
 
 It should be easy enough to use copy and use that file in other projects.
 
@@ -50,7 +50,7 @@ It should be easy enough to use copy and use that file in other projects.
 ## TODO
 
 * [ ] Extract Hiccup-surgery tools into separate library.
-* [ ] Extend `hackerpaper.hnthread/block-text` to convert italics and links to
+* [ ] Extend `hackerpaper.hn-thread/block-text` to convert italics and links to
   Markdown.
 * [x] Support predicates for attribute values.
 
