@@ -57,7 +57,7 @@
   "Returns the comment content, converted to text."
   [comm]
   (-> (h/walk comm)
-      (h/select [#(str/starts-with? (or (-> % h/attrs :class) "") "commtext ")])
+      (h/select [{:class #(str/starts-with? % "commtext ")}])
       h/children
       drop-reply-link
       block-text))

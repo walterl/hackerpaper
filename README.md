@@ -52,7 +52,7 @@ It should be easy enough to use copy and use that file in other projects.
 * [ ] Extract Hiccup-surgery tools into separate library.
 * [ ] Extend `hackerpaper.hnthread/block-text` to convert italics and links to
   Markdown.
-* Support predicates for attribute values.
+* [x] Support predicates for attribute values.
 
 
 ## License
