@@ -24,6 +24,13 @@
                       :when (not (string? child))]
                   (walk child)))))
 
+(defn- attrs-item->pred
+  [[attr value]]
+  (fn [node]
+    (let [node-attrs (attrs node)]
+      (and (contains? node-attrs attr)
+           (= value (node-attrs attr))))))
+
 (defn- selector-spec->pred
   "Maps the given selector spec to a node predicate."
   [spec]
@@ -32,12 +39,7 @@
     (fn [node] (= (tag node) spec))
 
     (map? spec)
-    (fn [node]
-      (let [node-attrs (attrs node)]
-        (every? (fn [[k v]]
-                  (and (contains? node-attrs k)
-                       (= v (node-attrs k))))
-                spec)))
+    (apply every-pred (map attrs-item->pred spec))
 
     (fn? spec)
     spec))
